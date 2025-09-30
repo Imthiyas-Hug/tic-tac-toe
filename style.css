@@ -1,0 +1,8 @@
+
+.container button{
+    width: 25px;
+    height: 20px;
+}
+.first-row, .second-row, .third-row{
+    width: fit-content;
+}
