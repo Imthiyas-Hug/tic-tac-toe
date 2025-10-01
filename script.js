@@ -1,89 +1,57 @@
-const player1_vs_player2_btn = document.querySelector('.player1-vs-player2');
-const player_vs_computer_btn = document.querySelector('.player-vs-computer');
-const board_buttons = document.querySelectorAll('.container button');
-const first_row = document.querySelectorAll('.first-row button');
-const second_row = document.querySelectorAll('.second-row button');
-const third_row = document.querySelectorAll('.third-row button');
+const gameBoard = (function () {
 
-let playerChoice;
-let computerChoice;
-player_vs_computer_btn.addEventListener('click', () => {
-    playerChoice = window.prompt("Choose 'X' or 'O' ").toUpperCase();
-    if (playerChoice == 'X') {
+    let array = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', ''],
+    ];
 
-        computerChoice = 'O';
-    }
-    else {
-
-        computerChoice = 'X';
-    }
-})
-
-const array = [
-    ['', '', ''],
-
-    ['', '', ''],
-
-    ['', '', '']
-];
-
-let random_row;
-let random_col;
-
-first_row.forEach(button => {
-    button.addEventListener('click', (event) => {
-        random_row = Math.floor(Math.random() * 3);
-        random_col = Math.floor(Math.random() * 3);
-        array[0][event.target.dataset.index] = playerChoice;
-        button.textContent = playerChoice;
-        for (let i = 0; i < 3; i++) {
-            if (random_col == event.target.dataset.index) {
-                continue;
-            }
-            random_col = i;
+    function mark(row, col, value, whoseTurn) {
+        array[row][col] = value;
+        console.log(array);
+    
+        if (whoseTurn == 'Player 1') {
+            getIndices('Player 2');
+        } else {
+            getIndices('Player 1');
         }
-        if(!(array[random_row][random_col]))
-            array[random_row][random_col] = computerChoice;
-            console.log(array);
-        })
-})
+    }
 
-second_row.forEach(button => {
-    button.addEventListener('click', (event) => {
-        random_row = Math.floor(Math.random() * 3);
-        random_col = Math.floor(Math.random() * 3);
-        array[1][event.target.dataset.index] = playerChoice;
-        button.textContent = playerChoice;
-        array[random_row][random_col] = computerChoice;
-        console.log(array)
-    })
-})
+    return {
+        mark
+    };
 
-third_row.forEach(button => {
-    button.addEventListener('click', (event) => {
-        random_row = Math.floor(Math.random() * 3);
-        random_col = Math.floor(Math.random() * 3);
-        array[2][event.target.dataset.index] = playerChoice;
-        button.textContent = playerChoice;
-        array[random_row][random_col] = computerChoice;
-        console.log(array)
-    })
-})
-console.log(board_buttons)
-// board_buttons.forEach(button => {
-//     button.addEventListener('click', (event) => {
-//         if (random_col == event.target.dataset.index) {
-// for (let i = 0; i < 3; i++) {
-//     if (random_col == i) {
-//         continue;
-//     }
-//                 random_col = i;
-//                 array[random_row][random_col] = computerChoice;
-//                 button.textContent = array[random_row][random_col];
-//             }
-//         }
+})();
 
+console.log('__00__|__01__|__02__');
+console.log('__10__|__11__|__12__');
+console.log('  20  |  21  |  22  ');
 
-//     })
-// })
+let player1Choice;
+let player2Choice;
+let playsFirst;
+let row;
+let col;
+let whoseTurn;
 
+getChoices();
+function getChoices() {
+    player1Choice = window.prompt('Enter Player 1 Choice: "X" or "O" ').toUpperCase();
+    player2Choice = (player1Choice == "X") ? "O" : "X";
+    window.alert(`Player 2 Choice is "${player2Choice}"`);
+    playsFirst = (player1Choice == "X") ? 'Player 1' : 'Player 2';
+    window.alert(`X plays first!`);
+    whoseTurn = playsFirst;
+    getIndices(whoseTurn);
+}
+
+function getIndices(whoseTurn) {
+    window.alert(`${whoseTurn} Turn:`);
+    row = window.prompt(`(${whoseTurn} Turn) Enter the row number(0,1,2) you want to mark.`);
+    col = window.prompt(`(${whoseTurn} Turn) Enter the col number(0,1,2) you want to mark.`);
+    if (whoseTurn == 'Player 1') {
+        gameBoard.mark(row, col, player1Choice, whoseTurn);
+    } else {
+        gameBoard.mark(row, col, player2Choice, whoseTurn);
+    }
+}
