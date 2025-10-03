@@ -6,11 +6,19 @@ const gameBoard = (function () {
         ['', '', ''],
     ];
 
-    let emptyArray = [
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', ''],
-    ];
+    let emptyArray = 
+
+    function resetArray() {
+        array = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+       ];
+        player1Winner = false;
+        player2Winner = false;
+        alert('Game reset! Starting a new game.');
+        getChoices();
+    }
 
     let leftDiagonal;
     let rightDiagonal;
@@ -120,6 +128,7 @@ const gameBoard = (function () {
         if (player1Winner) {
             alert('Player 1 wins!');
             console.log('Player 1 wins!');
+            resetArray();
             return;
         }
 
@@ -127,6 +136,7 @@ const gameBoard = (function () {
         if (player2Winner && whoseTurn == 'Player 2') {
             alert('Player 2 wins!');
             console.log('Player 2 wins!');
+            resetArray();
             return;
         }
 
@@ -134,6 +144,7 @@ const gameBoard = (function () {
         if (player2Winner && whoseTurn == 'Computer') {
             alert('Computer wins!');
             console.log('Computer wins!');
+            resetArray();
             return;
         }
 
@@ -159,7 +170,8 @@ const gameBoard = (function () {
         if ((!arrayNotFull()) && (!player1Winner) && (!player2Winner)) {
             alert('Match Tie!');
             console.log('Match Tie!');
-            return;
+            resetArray();
+            return; 
         }
     }
 
@@ -180,7 +192,7 @@ let whoseTurn;
 alert('Choose who do you want to play with!');
 let whoVersusWho = window.prompt('Computer(0) or Player(1)');
 
-const input = ['0', '1', '2'];
+const input = [0, 1, 2];
 const marker = ['X', 'O'];
 
 function getChoices() {
@@ -216,20 +228,24 @@ getChoices();
 function getIndices(whoseTurn) {
     window.alert(`${whoseTurn} Turn:`);
     console.log(whoseTurn);
-    if (whoseTurn == 'Player 1' || whoseTurn == 'Player 2') {
-        row = window.prompt(`(${whoseTurn} Turn) Enter the row number(0,1,2) you want to mark.`);
-        col = window.prompt(`(${whoseTurn} Turn) Enter the col number(0,1,2) you want to mark.`);
-    }
-    if (whoseTurn == 'Computer') {
-        row = Math.floor(Math.random() * 3).toString();
-        col = Math.floor(Math.random() * 3).toString();
-    }
-    if (!(input.includes(row)) || !(input.includes(col))) {
-      if(row == null || col == null) {
-        return;
-      }
-        alert('Invalid Input! Enter Again.');
-        getIndices(whoseTurn);
+    let validInput = false;
+    while (!validInput) {
+        if (whoseTurn == 'Player 1' || whoseTurn == 'Player 2') {
+            row = Number(window.prompt(`(${whoseTurn} Turn) Enter the row number(0,1,2) you want to mark.`));
+            col = Number(window.prompt(`(${whoseTurn} Turn) Enter the col number(0,1,2) you want to mark.`));
+        }
+        if (whoseTurn == 'Computer') {
+            row = Math.floor(Math.random() * 3);
+            col = Math.floor(Math.random() * 3);
+        }
+        if (row == null || col == null) {
+            return;
+        }
+        if (!(input.includes(row)) || !(input.includes(col))) {
+            alert('Invalid Input! Enter Again.');
+            continue;
+        }
+        validInput = true;
     }
     if (whoseTurn == 'Player 1') {
       if(whoVersusWho == '1'){
@@ -249,7 +265,7 @@ function getIndices(whoseTurn) {
 }
 
 function getComputerIndices(whoseTurn) {
-      row = Math.floor(Math.random() * 3).toString();
-      col = Math.floor(Math.random() * 3).toString();
+      row = Math.floor(Math.random() * 3);
+      col = Math.floor(Math.random() * 3);
       gameBoard.mark(row, col, computerChoice, whoseTurn, player1Choice, computerChoice, whoVersusWho);
   }
