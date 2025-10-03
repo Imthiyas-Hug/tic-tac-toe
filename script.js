@@ -51,18 +51,22 @@ const gameBoard = (function () {
     function mark(row, col, value, whoseTurn, player1Choice, opponentChoice, whoVersusWho) {
 
         //assigning value
-        if (row && col) {
+        if (arrayNotFull() && (!player1Winner) && (!player2Winner)) {   
             if (array[row][col] == '') {
                 array[row][col] = value;
                 console.table(array);
             }
-            else if (whoseTurn = 'Player 1' || whoseTurn == 'Player 2') {
-                alert('Spot taken Already! Mark Again.');
-                getIndices(whoseTurn);
+            else{
+                if(whoseTurn == 'Computer') {
+                    getComputerIndices(whoseTurn);
+                }
+                else{
+                    alert('Spot taken Already! Mark Again.');
+                    getIndices(whoseTurn);
+                }
+  
             }
-            else if (whoseTurn = 'Computer') {
-                getIndices(whoseTurn);
-            }
+  
         }
 
         //checking rows for player1 value 
@@ -76,21 +80,9 @@ const gameBoard = (function () {
         p2ThirdRowCheck = array[2].every(cell => cell == opponentChoice);
 
         //extracting each column value and assigning
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 1; j++) {
-                firstColumn[i] = array[i][j];
-            }
-        }
-        for (let i = 0; i < 3; i++) {
-            for (let j = 1; j < 2; j++) {
-                secondColumn[i] = array[i][j];
-            }
-        }
-        for (let i = 0; i < 3; i++) {
-            for (let j = 2; j < 3; j++) {
-                thirdColumn[i] = array[i][j];
-            }
-        }
+        firstColumn = array.map(row => row[0]);
+        secondColumn = array.map(row => row[1]);
+        thirdColumn = array.map(row => row[2]);
 
         //checking columns for player1 value 
         p1FirstColCheck = firstColumn.every(cell => cell == player1Choice);
@@ -128,18 +120,21 @@ const gameBoard = (function () {
         if (player1Winner) {
             alert('Player 1 wins!');
             console.log('Player 1 wins!');
+            return;
         }
 
         //alerting player2 result
         if (player2Winner && whoseTurn == 'Player 2') {
             alert('Player 2 wins!');
             console.log('Player 2 wins!');
+            return;
         }
 
         //alerting computer result
         if (player2Winner && whoseTurn == 'Computer') {
             alert('Computer wins!');
             console.log('Computer wins!');
+            return;
         }
 
         //getting row and col values for each turn 
@@ -155,13 +150,16 @@ const gameBoard = (function () {
             else if (whoseTurn == 'Player 2') {
                 getIndices('Player 1');
             }
-
+            else if (whoseTurn == 'Computer') {
+                getIndices('Player 1');
+            }
         }
 
         //checking for match tie
         if ((!arrayNotFull()) && (!player1Winner) && (!player2Winner)) {
             alert('Match Tie!');
             console.log('Match Tie!');
+            return;
         }
     }
 
@@ -217,20 +215,30 @@ getChoices();
 
 function getIndices(whoseTurn) {
     window.alert(`${whoseTurn} Turn:`);
-    if (whoseTurn = 'Player 1' || whoseTurn == 'Player 2') {
+    console.log(whoseTurn);
+    if (whoseTurn == 'Player 1' || whoseTurn == 'Player 2') {
         row = window.prompt(`(${whoseTurn} Turn) Enter the row number(0,1,2) you want to mark.`);
         col = window.prompt(`(${whoseTurn} Turn) Enter the col number(0,1,2) you want to mark.`);
     }
     if (whoseTurn == 'Computer') {
-        row = Math.floor(Math.random() * 3);
-        col = Math.floor(Math.random() * 3);
+        row = Math.floor(Math.random() * 3).toString();
+        col = Math.floor(Math.random() * 3).toString();
     }
     if (!(input.includes(row)) || !(input.includes(col))) {
+      if(row == null || col == null) {
+        return;
+      }
         alert('Invalid Input! Enter Again.');
         getIndices(whoseTurn);
     }
     if (whoseTurn == 'Player 1') {
+      if(whoVersusWho == '1'){
         gameBoard.mark(row, col, player1Choice, whoseTurn, player1Choice, player2Choice,whoVersusWho);
+      }
+      else{
+        gameBoard.mark(row, col, player1Choice, whoseTurn, player1Choice, computerChoice, whoVersusWho);
+      }
+        
     }
     else if (whoseTurn == 'Player 2') {
         gameBoard.mark(row, col, player2Choice, whoseTurn, player1Choice, player2Choice,whoVersusWho);
@@ -240,3 +248,8 @@ function getIndices(whoseTurn) {
     }
 }
 
+function getComputerIndices(whoseTurn) {
+      row = Math.floor(Math.random() * 3).toString();
+      col = Math.floor(Math.random() * 3).toString();
+      gameBoard.mark(row, col, computerChoice, whoseTurn, player1Choice, computerChoice, whoVersusWho);
+  }
