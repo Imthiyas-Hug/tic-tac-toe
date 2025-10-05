@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/icons8-tic-tac-toe-32.png">
 </head>
+
 <body>
 
-    <!-- <button class="player1-vs-player2">Player 1 vs Player 2</button> -->
-    <!-- <button class="player-vs-computer">Player vs Computer</button>
-
-    <div class="container">
-
-        <div class="first-row">
-            <button data-index="0"></button>
-            <button data-index="1"></button>
-            <button data-index="2"></button>
+    <h1>Tic Tac Toe</h1>
+    <div class="play-buttons">
+        <button data-id="0">▶ Play with Computer </button>
+        <button data-id="1">▶ Play with Friend</button>
+    </div>
+    <div class="board">
+        <div class="row">
+            <p class="cell" data-row="0" data-col="0" id="0"></p>
+            <p class="cell" data-row="0" data-col="1" id="1"></p>
+            <p class="cell" data-row="0" data-col="2" id="2"></p>
         </div>
-
-        <div class="second-row">
-            <button data-index="0"></button>
-            <button data-index="1"></button>
-            <button data-index="2"></button>
+        <div class="row">
+            <p class="cell" data-row="1" data-col="0" id="3"></p>
+            <p class="cell" data-row="1" data-col="1" id="4"></p>
+            <p class="cell" data-row="1" data-col="2" id="5"></p>
         </div>
-
-        <div class="third-row">
-            <button data-index="0"></button>
-            <button data-index="1"></button>
-            <button data-index="2"></button>
+        <div class="row">
+            <p class="cell" data-row="2" data-col="0" id="6"></p>
+            <p class="cell" data-row="2" data-col="1" id="7"></p>
+            <p class="cell" data-row="2" data-col="2" id="8"></p>
         </div>
-
-    </div> -->
-
+    </div>
+    <dialog>
+        <span>Player 1 Marker:</span>
+        <div class="marker-btn">
+            <button>X</button>
+            <button>O</button>
+        </div>
+    </dialog>
     <script src="script.js"></script>
 </body>
+
 </html>
