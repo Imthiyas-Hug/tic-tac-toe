@@ -55,7 +55,7 @@
         </div>
     </dialog>
 
-    <dialog id="playerName-dialog">
+    <dialog id="playerName-dialog" closedby="any">
         <form>
             <div class="inputs">
                 <label for="playerName">Player:</label>
@@ -65,7 +65,7 @@
         </form>
     </dialog>
 
-    <dialog id="playersName-dialog">
+    <dialog id="playersName-dialog" closedby="any">
         <form>
             <div class="inputs" style="margin-bottom: 20px;">
                 <label for="player1Name">Player 1:</label>
@@ -79,8 +79,9 @@
         </form>
     </dialog>
 
-    <dialog id="result-dialog" closedby="any">
-        <p id="result"></p>
+    <dialog id="result-dialog" closedby="any"
+    >
+        <p id="result" style="font-size: 2rem; color: rgb(8, 168, 8);">Halq Wins!</p>
         <button id="home-btn">Home</button>
         <button id="playAgain-btn">Play Again</button>
     </dialog>

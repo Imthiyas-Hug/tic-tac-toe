@@ -6,7 +6,7 @@ let col;
 let cellId;
 let whoseTurn;
 let whoVersusWho;
-let twoPlayerModeturn = false;
+let isTurnSwitchPending = false;
 
 const cells = document.querySelectorAll(".cell");
 const playWithPcbtn = document.querySelector("#playWithComputer-btn");
@@ -95,22 +95,22 @@ const gameBoard = (function () {
     let player1Winner;
     let player2Winner;
 
-    let p1turn = false;
-    let p2turn = false;
+    let player1HasMoved = false;
+    let player2HasMoved = false;
 
-    function arrayNotFull() {
+    function hasEmptyCells() {
         return array.some(row => row.some(cell => cell == ''));
     }
 
     function mark(row, col, value, whoseTurn, player1Choice, opponentChoice, cellId) {
 
         //assigning value
-        if (arrayNotFull() && (!player1Winner) && (!player2Winner)) {
+        if (hasEmptyCells() && (!player1Winner) && (!player2Winner)) {
             if (array[row][col] == '') {
                 if (whoseTurn == 'Player 1' && (!gameBoard.p1turn)) {
                     array[row][col] = value;
                     cells[cellId].textContent = array[row][col];
-                    gameBoard.p1turn = true;
+                    gameBoard.player1HasMoved = true;
                     cells[cellId].classList.remove('marked');
                     void cells[cellId].offsetWidth; // restart animation
                     cells[cellId].classList.add('marked');
@@ -119,7 +119,7 @@ const gameBoard = (function () {
                 else if ((whoseTurn == 'Computer' || whoseTurn == 'Player 2') && (!gameBoard.p2turn) ) {
                     array[row][col] = value;
                     cells[cellId].textContent = array[row][col];
-                    gameBoard.p2turn = true;
+                    gameBoard.player2HasMoved = true;
                     cells[cellId].classList.remove('marked');
                     void cells[cellId].offsetWidth; // restart animation
                     cells[cellId].classList.add('marked');
@@ -215,15 +215,15 @@ const gameBoard = (function () {
         }
 
         //getting row and col values for each turn 
-        if (arrayNotFull() && (!player1Winner) && (!player2Winner)) {
+        if (hasEmptyCells() && (!player1Winner) && (!player2Winner)) {
             if (whoseTurn == 'Player 1') {
                 if (whoVersusWho == '1') {
                     p1Marker.classList.remove('turn');
                     p2Marker.classList.add('turn');
-                    gameBoard.p2turn = false;
+                    gameBoard.player2HasMoved = false;
                 }
                 else {
-                    gameBoard.p2turn = false;
+                    gameBoard.player2HasMoved = false;
                     p1Marker.classList.remove('turn');
                     p2Marker.classList.add('turn');
                     setTimeout(() => {
@@ -234,22 +234,21 @@ const gameBoard = (function () {
             else if (whoseTurn == 'Player 2') {
                 p2Marker.classList.remove('turn');
                 p1Marker.classList.add('turn');
-                gameBoard.p1turn = false;
+                gameBoard.player1HasMoved = false;
             }
             else if (whoseTurn == 'Computer') {
                 p2Marker.classList.remove('turn');
                 p1Marker.classList.add('turn');
-                gameBoard.p1turn = false;
+                gameBoard.player1HasMoved = false;
             }
         }
 
         //checking for match tie
-        if ((!arrayNotFull()) && (!player1Winner) && (!player2Winner)) {
+        if ((!hasEmptyCells()) && (!player1Winner) && (!player2Winner)) {
             result.textContent = 'Round Tie!';
             setTimeout(() => {
                 resultDialog.showModal();
             }, 1000);
-            console.log('Match Tie!');
             return;
         }
     }
@@ -262,7 +261,7 @@ const gameBoard = (function () {
 
 
 function getIndices(whoseTurn, row, col, cellId) {
-    console.log(whoseTurn);
+    
     if (whoseTurn == 'Player 1') {
         if (whoVersusWho == '1') {
             gameBoard.mark(row, col, player1Choice, whoseTurn, player1Choice, player2Choice, cellId);
@@ -306,7 +305,7 @@ function getComputerIndices(whoseTurn) {
     else if (row == 2 && col == 2) {
         cellId = '8';
     }
-    console.log(row, col, cellId)
+
     gameBoard.mark(row, col, computerChoice, whoseTurn, player1Choice, computerChoice, cellId);
 }
 
@@ -373,7 +372,7 @@ markerBtns.forEach(btn => {
             }
             playFirstDialog.showModal();
             whoseTurn = (player1Choice == "X") ? 'Player 1' : 'Player 2';
-            twoPlayerModeturn = true;
+            isTurnSwitchPending = true;
         }
         else {
             computerChoice = (player1Choice == "X") ? "O" : "X";
@@ -401,17 +400,17 @@ cells.forEach(cell => {
         if (whoseTurn == 'Computer' && whoVersusWho == '0') {
             whoseTurn = 'Player 1';
         }
-        if (whoseTurn == 'Player 1' && whoVersusWho == '1' && (!twoPlayerModeturn)) {
+        if (whoseTurn == 'Player 1' && whoVersusWho == '1' && (!isTurnSwitchPending)) {
             whoseTurn = 'Player 2';
         }
-        else if (whoseTurn == 'Player 2' && whoVersusWho == '1' && (!twoPlayerModeturn)) {
+        else if (whoseTurn == 'Player 2' && whoVersusWho == '1' && (!isTurnSwitchPending)) {
             whoseTurn = 'Player 1';
         }
         console.log(whoseTurn);
         setTimeout(() => {
             getIndices(whoseTurn, row, col, cellId);
         }, 50);
-        twoPlayerModeturn = false;
+        isTurnSwitchPending = false;
     })
 })
 
