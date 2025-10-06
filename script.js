@@ -6,7 +6,7 @@ let col;
 let cellId;
 let whoseTurn;
 let whoVersusWho;
-let turn = false;
+let twoPlayerModeturn = false;
 
 const cells = document.querySelectorAll(".cell");
 const playWithPcbtn = document.querySelector("#playWithComputer-btn");
@@ -21,6 +21,7 @@ const playFirstDialog = document.querySelector("#playFirst-dialog");
 const result = document.querySelector("#result");
 const restartBtn = document.querySelector("#restart-btn");
 const playAgainbBtn = document.querySelector("#playAgain-btn");
+const homeBtn = document.querySelector("#home-btn");
 const playerNameSubmitBtn = document.querySelector("#playerNameSubmit-btn");
 const playersNameSubmitBtn = document.querySelector("#playersNameSubmit-btn");
 const board = document.querySelector('.board');
@@ -48,6 +49,8 @@ const gameBoard = (function () {
             ['', '', ''],
             ['', '', ''],
         ];
+        p2Marker.classList.remove('turn');
+        p1Marker.classList.add('turn');
         player1Winner = false;
         player2Winner = false;
         gameBoard.p1turn = false;
@@ -111,7 +114,6 @@ const gameBoard = (function () {
                     cells[cellId].classList.remove('marked');
                     void cells[cellId].offsetWidth; // restart animation
                     cells[cellId].classList.add('marked');
-                    p1Marker.classList.remove('turn');
                     console.table(array);
                 }
                 else if ((whoseTurn == 'Computer' || whoseTurn == 'Player 2') && (!gameBoard.p2turn) ) {
@@ -121,11 +123,8 @@ const gameBoard = (function () {
                     cells[cellId].classList.remove('marked');
                     void cells[cellId].offsetWidth; // restart animation
                     cells[cellId].classList.add('marked');
-                    p2Marker.classList.remove('turn');
-                    p1Marker.classList.add('turn');
                     console.table(array);
                 }
-
             }
             else {
                 if (whoseTurn == 'Computer') {
@@ -136,7 +135,6 @@ const gameBoard = (function () {
                 }
 
             }
-
         }
 
         //checking rows for player1 value 
@@ -220,19 +218,27 @@ const gameBoard = (function () {
         if (arrayNotFull() && (!player1Winner) && (!player2Winner)) {
             if (whoseTurn == 'Player 1') {
                 if (whoVersusWho == '1') {
+                    p1Marker.classList.remove('turn');
+                    p2Marker.classList.add('turn');
                     gameBoard.p2turn = false;
                 }
                 else {
                     gameBoard.p2turn = false;
+                    p1Marker.classList.remove('turn');
+                    p2Marker.classList.add('turn');
                     setTimeout(() => {
                         getComputerIndices('Computer');
                     }, 800);
                 }
             }
             else if (whoseTurn == 'Player 2') {
+                p2Marker.classList.remove('turn');
+                p1Marker.classList.add('turn');
                 gameBoard.p1turn = false;
             }
             else if (whoseTurn == 'Computer') {
+                p2Marker.classList.remove('turn');
+                p1Marker.classList.add('turn');
                 gameBoard.p1turn = false;
             }
         }
@@ -359,21 +365,29 @@ markerBtns.forEach(btn => {
         restartBtn.style.display = 'block';
         if (whoVersusWho == '1') {
             player2Choice = (player1Choice == "X") ? "O" : "X";
+            if(player1Choice == 'X'){
+                p1Marker.classList.add('turn');
+            }
+            else{
+                p2Marker.classList.add('turn');
+            }
             playFirstDialog.showModal();
             whoseTurn = (player1Choice == "X") ? 'Player 1' : 'Player 2';
-            turn = true;
+            twoPlayerModeturn = true;
         }
         else {
             computerChoice = (player1Choice == "X") ? "O" : "X";
             if(computerChoice == 'X'){
                 p2Marker.classList.add('turn');
+            }else{
+                p1Marker.classList.add('turn');
             }
             playFirstDialog.showModal();
             whoseTurn = (player1Choice == "X") ? 'Player 1' : 'Computer';
             if (whoseTurn == "Computer") {
                 setTimeout(() => {
                     getComputerIndices(whoseTurn);
-                }, 2500);
+                }, 1000);
             }
         }
     })
@@ -387,17 +401,17 @@ cells.forEach(cell => {
         if (whoseTurn == 'Computer' && whoVersusWho == '0') {
             whoseTurn = 'Player 1';
         }
-        if (whoseTurn == 'Player 1' && whoVersusWho == '1' && (!turn)) {
+        if (whoseTurn == 'Player 1' && whoVersusWho == '1' && (!twoPlayerModeturn)) {
             whoseTurn = 'Player 2';
         }
-        else if (whoseTurn == 'Player 2' && whoVersusWho == '1' && (!turn)) {
+        else if (whoseTurn == 'Player 2' && whoVersusWho == '1' && (!twoPlayerModeturn)) {
             whoseTurn = 'Player 1';
         }
         console.log(whoseTurn);
         setTimeout(() => {
             getIndices(whoseTurn, row, col, cellId);
         }, 50);
-        turn = false;
+        twoPlayerModeturn = false;
     })
 })
 
@@ -405,8 +419,12 @@ restartBtn.addEventListener('click', () => {
     gameBoard.resetArray();
     resultDialog.close();
 })
-
 playAgainbBtn.addEventListener('click', () => {
+    gameBoard.resetArray();
+    resultDialog.close();
+});
+
+homeBtn.addEventListener('click', () => {
     window.location.reload();
 })
 
