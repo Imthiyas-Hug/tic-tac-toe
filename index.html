@@ -13,34 +13,84 @@
 <body>
 
     <h1>Tic Tac Toe</h1>
+
     <div class="play-buttons">
-        <button data-id="0">▶ Play with Computer </button>
-        <button data-id="1">▶ Play with Friend</button>
+        <button data-id="0" id="playWithComputer-btn">▶ Play with Computer </button>
+        <button data-id="1" id="playWithFrnd-btn">▶ Play with Friend</button>
     </div>
-    <div class="board">
-        <div class="row">
-            <p class="cell" data-row="0" data-col="0" id="0"></p>
-            <p class="cell" data-row="0" data-col="1" id="1"></p>
-            <p class="cell" data-row="0" data-col="2" id="2"></p>
+
+    <div class="board-container">
+        <div class="player1-status player-status" style="display: none;">
+            <p id="p1Status">Player 1</p>
+            <p id="p1Marker">X</p>
         </div>
-        <div class="row">
-            <p class="cell" data-row="1" data-col="0" id="3"></p>
-            <p class="cell" data-row="1" data-col="1" id="4"></p>
-            <p class="cell" data-row="1" data-col="2" id="5"></p>
+        <div class="board">
+            <div class="row">
+                <p class="cell" data-row="0" data-col="0" id="0"></p>
+                <p class="cell" data-row="0" data-col="1" id="1"></p>
+                <p class="cell" data-row="0" data-col="2" id="2"></p>
+            </div>
+            <div class="row">
+                <p class="cell" data-row="1" data-col="0" id="3"></p>
+                <p class="cell" data-row="1" data-col="1" id="4"></p>
+                <p class="cell" data-row="1" data-col="2" id="5"></p>
+            </div>
+            <div class="row">
+                <p class="cell" data-row="2" data-col="0" id="6"></p>
+                <p class="cell" data-row="2" data-col="1" id="7"></p>
+                <p class="cell" data-row="2" data-col="2" id="8"></p>
+            </div>
         </div>
-        <div class="row">
-            <p class="cell" data-row="2" data-col="0" id="6"></p>
-            <p class="cell" data-row="2" data-col="1" id="7"></p>
-            <p class="cell" data-row="2" data-col="2" id="8"></p>
+        <div class="player2-status player-status" style="display: none;">
+            <p id="p2Status">Player 2</p>
+            <p id="p2Marker">O</p>
         </div>
     </div>
-    <dialog>
-        <span>Player 1 Marker:</span>
+
+    <dialog id="marker-dialog">
+        <span id="player-marker">Player 1 Marker:</span>
         <div class="marker-btn">
             <button>X</button>
             <button>O</button>
         </div>
     </dialog>
+
+    <dialog id="playerName-dialog">
+        <form>
+            <div class="inputs">
+                <label for="playerName">Player:</label>
+                <input type="text" placeholder="Enter Your Name" id="playerName" required>
+                <button id="playerNameSubmit-btn">Submit</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="playersName-dialog">
+        <form>
+            <div class="inputs" style="margin-bottom: 20px;">
+                <label for="player1Name">Player 1:</label>
+                <input type="text" placeholder="Enter Your Name" id="player1Name" required>
+            </div>
+            <div class="inputs">
+                <label for="player2Name">Player 2:</label>
+                <input type="text" placeholder="Enter Your Name" id="player2Name" required>
+            </div>
+            <button id="playersNameSubmit-btn" style="margin-top: 20px;">Submit</button>
+        </form>
+    </dialog>
+
+    <dialog id="result-dialog" closedby="any">
+        <p id="result"></p>
+        <button id="playAgain-btn">PLAY AGAIN</button>
+    </dialog>
+
+    <dialog id="playFirst-dialog" closedby="any">
+        <p>X plays First!</p>
+        <button onclick="closeDialog()">OK</button>
+    </dialog>
+
+    <button id="restart-btn" style="display: none; align-self: center; margin-top: 50px;">RESTART GAME</button>
+
     <script src="script.js"></script>
 </body>
 
