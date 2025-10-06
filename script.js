@@ -50,6 +50,8 @@ const gameBoard = (function () {
         ];
         player1Winner = false;
         player2Winner = false;
+        gameBoard.p1turn = false;
+        gameBoard.p2turn = false;
         cells.forEach(cell => {
             cell.textContent = "";
         })
@@ -90,6 +92,9 @@ const gameBoard = (function () {
     let player1Winner;
     let player2Winner;
 
+    let p1turn = false;
+    let p2turn = false;
+
     function arrayNotFull() {
         return array.some(row => row.some(cell => cell == ''));
     }
@@ -99,12 +104,25 @@ const gameBoard = (function () {
         //assigning value
         if (arrayNotFull() && (!player1Winner) && (!player2Winner)) {
             if (array[row][col] == '') {
-                array[row][col] = value;
-                cells[cellId].textContent = array[row][col];
-                cells[cellId].classList.remove('marked');
-                void cells[cellId].offsetWidth; // restart animation
-                cells[cellId].classList.add('marked');
-                console.table(array);
+                if (whoseTurn == 'Player 1' && (!gameBoard.p1turn)) {
+                    array[row][col] = value;
+                    cells[cellId].textContent = array[row][col];
+                    gameBoard.p1turn = true;
+                    cells[cellId].classList.remove('marked');
+                    void cells[cellId].offsetWidth; // restart animation
+                    cells[cellId].classList.add('marked');
+                    console.table(array);
+                }
+                else if ((whoseTurn == 'Computer' || whoseTurn == 'Player 2') && (!gameBoard.p2turn) ) {
+                    array[row][col] = value;
+                    cells[cellId].textContent = array[row][col];
+                    gameBoard.p2turn = true;
+                    cells[cellId].classList.remove('marked');
+                    void cells[cellId].offsetWidth; // restart animation
+                    cells[cellId].classList.add('marked');
+                    console.table(array);
+                }
+
             }
             else {
                 if (whoseTurn == 'Computer') {
@@ -199,19 +217,20 @@ const gameBoard = (function () {
         if (arrayNotFull() && (!player1Winner) && (!player2Winner)) {
             if (whoseTurn == 'Player 1') {
                 if (whoVersusWho == '1') {
-                    // window.alert('Player 2 Turn:');
+                    gameBoard.p2turn = false;
                 }
                 else {
+                    gameBoard.p2turn = false;
                     setTimeout(() => {
                         getComputerIndices('Computer');
                     }, 800);
                 }
             }
             else if (whoseTurn == 'Player 2') {
-                // window.alert('Player 1 Turn:');
+                gameBoard.p1turn = false;
             }
             else if (whoseTurn == 'Computer') {
-                // window.alert('Player 1 Turn:');
+                gameBoard.p1turn = false;
             }
         }
 
@@ -245,9 +264,6 @@ function getIndices(whoseTurn, row, col, cellId) {
     }
     else if (whoseTurn == 'Player 2') {
         gameBoard.mark(row, col, player2Choice, whoseTurn, player1Choice, player2Choice, cellId);
-    }
-    else if (whoseTurn == 'Computer') {
-        gameBoard.mark(row, col, computerChoice, whoseTurn, player1Choice, computerChoice, cellId);
     }
 }
 
@@ -290,10 +306,12 @@ playWithPcbtn.addEventListener('click', (event) => {
     playerNameDialog.showModal();
 
 })
+
 playWithFrndbtn.addEventListener('click', (event) => {
     whoVersusWho = event.target.dataset.id;
     playersNameDialog.showModal();
 })
+
 playerNameSubmitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     gameBoard.p1Name = playerName.value;
@@ -308,6 +326,7 @@ playerNameSubmitBtn.addEventListener('click', (event) => {
         markerDialog.showModal();
     }
 })
+
 playersNameSubmitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     gameBoard.p1Name = player1Name.value;
@@ -353,6 +372,7 @@ markerBtns.forEach(btn => {
         }
     })
 })
+
 cells.forEach(cell => {
     cell.addEventListener('click', (event) => {
         cellId = event.target.id;
@@ -370,14 +390,16 @@ cells.forEach(cell => {
         console.log(whoseTurn);
         setTimeout(() => {
             getIndices(whoseTurn, row, col, cellId);
-        }, 300);
+        }, 50);
         turn = false;
     })
 })
+
 restartBtn.addEventListener('click', () => {
     gameBoard.resetArray();
     resultDialog.close();
 })
+
 playAgainbBtn.addEventListener('click', () => {
     window.location.reload();
 })

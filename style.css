@@ -45,6 +45,9 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: hsl(40, 100%, 97%);
     animation: fadeIn 1s ease-in-out;
+    margin-left: 0px;
+    margin-right: 0px;
+
 }
 
 .row {
@@ -213,7 +216,7 @@ input {
 input:focus {
     outline: none;
     border: 1px solid hsl(175, 70%, 46%);
-    ;
+
 }
 
 .inputs {
@@ -227,8 +230,7 @@ input:focus {
 .board-container {
     display: flex;
     align-items: center;
-    width: fit-content;
-    align-self: center;
+    justify-content: center;
     gap: 200px;
 }
 
@@ -259,6 +261,7 @@ input:focus {
 #p1Status,
 #p2Status {
     color: hsl(175, 70%, 56%);
+    width: 95px;
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
@@ -267,4 +270,12 @@ input:focus {
     letter-spacing: 2px;
     user-select: none;
     animation: fadeIn 1s ease-in-out;
+}
+
+.turn {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: hsl(175, 70%, 100%);
+    background-color: hsl(175, 70%, 66%);
+    padding: 0px 20px;
+
 }
