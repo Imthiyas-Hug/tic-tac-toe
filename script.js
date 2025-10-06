@@ -111,6 +111,7 @@ const gameBoard = (function () {
                     cells[cellId].classList.remove('marked');
                     void cells[cellId].offsetWidth; // restart animation
                     cells[cellId].classList.add('marked');
+                    p1Marker.classList.remove('turn');
                     console.table(array);
                 }
                 else if ((whoseTurn == 'Computer' || whoseTurn == 'Player 2') && (!gameBoard.p2turn) ) {
@@ -120,6 +121,8 @@ const gameBoard = (function () {
                     cells[cellId].classList.remove('marked');
                     void cells[cellId].offsetWidth; // restart animation
                     cells[cellId].classList.add('marked');
+                    p2Marker.classList.remove('turn');
+                    p1Marker.classList.add('turn');
                     console.table(array);
                 }
 
@@ -362,12 +365,15 @@ markerBtns.forEach(btn => {
         }
         else {
             computerChoice = (player1Choice == "X") ? "O" : "X";
+            if(computerChoice == 'X'){
+                p2Marker.classList.add('turn');
+            }
             playFirstDialog.showModal();
             whoseTurn = (player1Choice == "X") ? 'Player 1' : 'Computer';
             if (whoseTurn == "Computer") {
                 setTimeout(() => {
                     getComputerIndices(whoseTurn);
-                }, 1000);
+                }, 2500);
             }
         }
     })
