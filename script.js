@@ -53,8 +53,12 @@ const gameBoard = (function () {
         p1Marker.classList.add('turn');
         player1Winner = false;
         player2Winner = false;
-        gameBoard.p1turn = false;
-        gameBoard.p2turn = false;
+        if(whoVersusWho == '1'){
+            whoseTurn = 'Player 1';
+            isTurnSwitchPending = true;
+        }
+        gameBoard.player1HasMoved = false;
+        gameBoard.player2HasMoved = false;
         cells.forEach(cell => {
             cell.textContent = "";
         })
