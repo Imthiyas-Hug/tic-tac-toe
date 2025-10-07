@@ -107,7 +107,7 @@ const gameBoard = (function () {
         //assigning value
         if (hasEmptyCells() && (!player1Winner) && (!player2Winner)) {
             if (array[row][col] == '') {
-                if (whoseTurn == 'Player 1' && (!gameBoard.p1turn)) {
+                if (whoseTurn == 'Player 1' && (!gameBoard.player1HasMoved)) {
                     array[row][col] = value;
                     cells[cellId].textContent = array[row][col];
                     gameBoard.player1HasMoved = true;
@@ -116,7 +116,7 @@ const gameBoard = (function () {
                     cells[cellId].classList.add('marked');
                     console.table(array);
                 }
-                else if ((whoseTurn == 'Computer' || whoseTurn == 'Player 2') && (!gameBoard.p2turn) ) {
+                else if ((whoseTurn == 'Computer' || whoseTurn == 'Player 2') && (!gameBoard.player2HasMoved) ) {
                     array[row][col] = value;
                     cells[cellId].textContent = array[row][col];
                     gameBoard.player2HasMoved = true;
